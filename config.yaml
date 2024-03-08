@@ -1,0 +1,22 @@
+trade:
+  symbol: BTCUSDT
+  interval: 15m
+  qty: 0.00015 # 10 usd 
+  close_trade: False
+
+rsi:
+  rsi_up: 70
+  rsi_down: 30
+  rsi_period: 14
+  rsi_divergence: False
+
+bollinger:
+  boll_period: 10
+  boll_dev_factor: 2
+  profit_boll_middle: 20
+  double_boll_validation: False
+
+macd:
+  macd_divergence: True
+  full_macd: True
+  enable_macd: True

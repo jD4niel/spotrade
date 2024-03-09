@@ -323,8 +323,9 @@ def main():
 
         symbol_ft, interval_ft, mark_price_ft, rsi_ft, upper_band_ft, middle_band_ft, lower_band_ft, macd_line_ft, macd_signal_ft, macd_histogram_ft = format_variables(symbol, interval, mark_price, rsi, upper_band, middle_band, lower_band, macd_line, macd_signal, macd_histogram, rsi_up, rsi_down)
 
+        macd_validation = macd_line[-1] < 0 and macd_signal[-1] < 0 and macd_histogram[-1] < 0 if full_macd else macd_histogram[-1]
         # VALIDATE RSI, BOLL AND MACD
-        if rsi <= rsi_down and mark_price <= lower_band and macd_line[-1] < 0 and macd_signal[-1] < 0 and macd_histogram[-1] < 0:
+        if rsi <= rsi_down and mark_price <= lower_band and macd_validation:
             if not order_type:
                 order_type = "BUY" # LONG
 
@@ -356,7 +357,8 @@ def main():
 
             elif order_type == 'SELL':
                 logging.info(f"     SELL - middle: {COLOR_ORANGE}{middle_band:.2f}{COLOR_RESET} - mark_price: {COLOR_RED}{mark_price}{COLOR_RESET}")
-                if mark_price > middle_band:
+                close_value = middle_band if profit_boll_middle else upper_band
+                if mark_price >= close_value:
                     response = client.new_order(**params)
                     print(response)
                     response_data = get_response_vals(response)
